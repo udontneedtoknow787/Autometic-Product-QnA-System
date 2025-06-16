@@ -13,7 +13,7 @@ export default function Home() {
           Get instant <span className="font-bold">ANSWERS</span> to your product related questions along with <span className="font-bold">REASONING OR SOURCE</span>,
           powered by a fine-tuned model trained on over 20,000 product question-answer pairs.
         </p>
-        <Button className="mt-4">Get Started</Button>
+        <Button className="mt-4"><a href="/chat">Get Started</a></Button>
       </div>
       {/* <div className="flex justify-center mb-8">
         <Image

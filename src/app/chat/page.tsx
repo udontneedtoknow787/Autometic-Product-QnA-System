@@ -8,12 +8,13 @@ import { Product } from "@/types/interfaces";
 const ChatPage = () => {
   const [productLink, setProductLink] = useState("");
   const [productInfo, setProductInfo] = useState<Product | null>(null);
+  const [productId, setProductId] = useState<string | null>(null);
   const [question, setQuestion] = useState("");
   const [chat, setChat] = useState<{ question: string; answer: string }[]>([]);
   const [loadingProduct, setLoadingProduct] = useState(false);
   const [loadingAnswer, setLoadingAnswer] = useState(false);
 
-  // Mock fetch functions (replace with real API calls)
+
   const fetchProductInfo = async (link: string) => {
     setLoadingProduct(true);
     const response = await fetch("/api/fetchProductInfo", {
@@ -26,8 +27,9 @@ const ChatPage = () => {
     setLoadingProduct(false);
 
     if (response.ok) {
-      const data = await response.json();
-      setProductInfo(data.productInfo);
+      const { productInfo, productId } = await response.json();
+      setProductInfo(productInfo);
+      setProductId(productId);
     } else {
       console.error("Failed to fetch product info");
     }
@@ -35,10 +37,22 @@ const ChatPage = () => {
 
   const fetchAnswer = async (question: string) => {
     setLoadingAnswer(true);
-    // Simulate API call
-    await new Promise((res) => setTimeout(res, 1000));
+   const response = await fetch("/api/sendQuery", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ productId, question }),
+    });
     setLoadingAnswer(false);
-    return "This is a sample answer from backend.";
+
+    if (!response.ok) {
+      console.error("Failed to fetch answer");
+      return "Failed to fetch answer";
+    }
+
+    const { answer } = await response.json();
+    return answer;
   };
 
   const handleProductSubmit = (e: React.FormEvent) => {
@@ -129,7 +143,7 @@ const handleQuestionSubmit = async (e: React.FormEvent) => {
               {/* Backend Answer (Right) */}
               <div className="bg-green-600 px-4 py-3 rounded-lg max-w-[45%] self-end text-right">
                 <span className="font-semibold text-green-700">Bot:</span>
-                <div>{item.answer}</div>
+                <div className="whitespace-pre-wrap text-left">{item.answer}</div>
               </div>
             </div>
           ))}

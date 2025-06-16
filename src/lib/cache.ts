@@ -1,3 +1,4 @@
+import { Product } from "@/types/interfaces";
 import NodeCache from "node-cache";
 
 const cache = new NodeCache({ stdTTL: 1800 }); // 30 mins TTL
@@ -11,7 +12,7 @@ export const getCache = (key: string) => {
   return cache.get(key);
 };
 
-export const setCache = (key: string, value: any) => {
+export const setCache = (key: string, value: Product) => {
   if (!key) {
     throw new Error("Cache key is required");
   }
