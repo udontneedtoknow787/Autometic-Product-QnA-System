@@ -1,5 +1,4 @@
 import { setCache } from "@/lib/cache";
-import ScrapeProductInfo from "@/lib/scrape-product";
 import { Product } from "@/types/interfaces";
 import crypto from "crypto"
 
@@ -15,7 +14,11 @@ export async function POST(request: Request) {
         })
     }
     try {
-        const productInfo: Product = await ScrapeProductInfo(productURL);
+        const LLMURL = process.env.LLM_URL!;
+        const response = await fetch(LLMURL+"/scrape-data?url=" + encodeURIComponent(productURL), {
+            method: "GET",
+        })
+        const { productInfo }: { productInfo: Product } = await response.json();
         const productId = crypto.createHash("sha1").update(productURL).digest("hex");
         setCache(productId, productInfo);
         return Response.json({
