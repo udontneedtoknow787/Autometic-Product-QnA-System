@@ -1,36 +1,87 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Automatic Product Q&A System
 
-## Getting Started
+A full-stack web application that provides instant, accurate answers to product-related questions using a fine-tuned LLM (Large Language Model) trained on over 20,000 product Q&A pairs. The system scrapes product information from e-commerce sites, caches results for performance, and delivers answers with sources and reasoning.
 
-First, run the development server:
+---
+
+## ✨ Features
+
+- **Instant Product Q&A:** Get answers to your product queries in real time.
+- **Source & Reasoning:** Each answer includes supporting information and reasoning from product descriptions, reviews, and Q&A sections.
+- **Multi-language Support:** Handles questions in multiple languages (including Hindi and English).
+- **E-commerce Integration:** Gather up-to-date product data from Flipkart (more platforms can be added).
+- **Modern UI:** Built with Next.js, Tailwind CSS, and shadcn/ui for a responsive, accessible experience.
+- **Smart Caching:** Product info is cached for 30 minutes to reduce redundant scraping and speed up responses.
+
+---
+
+## 🚀 Getting Started
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/your-username/automatic-product-qna-system.git
+cd automatic-product-qna-system/frontend
+```
+
+### 2. Install dependencies
+
+```bash
+npm install
+# or
+yarn install
+```
+
+### 3. Run the development server
 
 ```bash
 npm run dev
 # or
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser to see the app.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🛠️ Project Structure
 
-## Learn More
+- `src/app/` – Next.js app directory (pages, API routes, layout)
+- `src/components/` – Reusable UI components (navigation bar, theme button, etc.)
+- `src/lib/` – Utility libraries (scraper, cache, etc.)
+- `src/types/` – TypeScript interfaces and types
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🖼️ Screenshots
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **Home Page:** Introduction and sample responses
+- **Chat Page:** Enter a product link, ask questions, and get instant answers with sources
+- **About Section:** Major features and project highlights
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## ⚡ Usage
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. **Paste a Flipkart product link** in the chat page.
+2. **Ask any product-related question** (in English or Hindi).
+3. **Get an instant answer** with reasoning and source references.
+
+---
+
+## 📦 Deployment
+
+Deploy easily on [Vercel](https://vercel.com/) or any platform supporting Next.js.
+
+---
+
+
+
+## 📢 Note
+
+- Currently, only Flipkart product links are supported.
+- For best results, use valid product URLs and clear questions.
+
+---
+
+Feel free to contribute, open issues, or suggest features!
