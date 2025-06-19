@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Product } from "@/types/interfaces";
+import { toast } from "sonner";
 
 const ChatPage = () => {
   const [productLink, setProductLink] = useState("");
@@ -13,7 +14,6 @@ const ChatPage = () => {
   const [chat, setChat] = useState<{ question: string; answer: string }[]>([]);
   const [loadingProduct, setLoadingProduct] = useState(false);
   const [loadingAnswer, setLoadingAnswer] = useState(false);
-
 
   const fetchProductInfo = async (link: string) => {
     setLoadingProduct(true);
@@ -32,12 +32,17 @@ const ChatPage = () => {
       setProductId(productId);
     } else {
       console.error("Failed to fetch product info");
+      toast("Failed to fetch product info.", {
+        description:
+          "If facing this issue continuously, please check the link or try again later.",
+        duration: 5000,
+      });
     }
   };
 
   const fetchAnswer = async (question: string) => {
     setLoadingAnswer(true);
-   const response = await fetch("/api/sendQuery", {
+    const response = await fetch("/api/sendQuery", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -48,6 +53,11 @@ const ChatPage = () => {
 
     if (!response.ok) {
       console.error("Failed to fetch answer");
+      toast("Failed to fetch answer.", {
+        description:
+          "If facing this issue continuously, please try again after some time.",
+        duration: 5000,
+      });
       return "Failed to fetch answer";
     }
 
@@ -60,21 +70,20 @@ const ChatPage = () => {
     if (productLink) fetchProductInfo(productLink);
   };
 
-const handleQuestionSubmit = async (e: React.FormEvent) => {
+  const handleQuestionSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!question.trim()) return;
-    setChat((prev) => [{ question, answer: "" }, ...prev]);
+    setChat((prev) => [{ question, answer: "Waiting..." }, ...prev]);
     const answer = await fetchAnswer(question);
     setChat((prev) =>
-        prev.map((item, idx) =>
-            idx === 0 ? { ...item, answer } : item
-        )
+      prev.map((item, idx) => (idx === 0 ? { ...item, answer } : item))
     );
     setQuestion("");
-};
+  };
 
   return (
     <div className="max-w-2xl mx-auto py-10 px-4">
+      <h1 className="text-3xl md:text-5xl font-bold mb-8 text-center">Automatic Product Q&A System</h1>
       {/* Product Link Input */}
       <form onSubmit={handleProductSubmit} className="mb-6 space-y-2">
         <label className="font-semibold">Enter Product Link:</label>
@@ -83,7 +92,7 @@ const handleQuestionSubmit = async (e: React.FormEvent) => {
             type="text"
             value={productLink}
             onChange={(e) => setProductLink(e.target.value)}
-            placeholder="Paste product link here"
+            placeholder="NOTE: Currently, only Flipkart links are supported"
             className="flex-1"
           />
           <Button type="submit" disabled={loadingProduct}>
@@ -100,8 +109,7 @@ const handleQuestionSubmit = async (e: React.FormEvent) => {
           </CardHeader>
           <CardContent>
             <p className="mb-1 font-semibold">
-              Price:{" "}
-              <span className="font-normal">{productInfo.price}</span>
+              Price: <span className="font-normal">{productInfo.price}</span>
             </p>
             <a
               href={productLink}
@@ -143,7 +151,9 @@ const handleQuestionSubmit = async (e: React.FormEvent) => {
               {/* Backend Answer (Right) */}
               <div className="bg-green-600 px-4 py-3 rounded-lg max-w-[45%] self-end text-right">
                 <span className="font-semibold text-green-700">Bot:</span>
-                <div className="whitespace-pre-wrap text-left">{item.answer}</div>
+                <div className="whitespace-pre-wrap text-left">
+                  {item.answer}
+                </div>
               </div>
             </div>
           ))}

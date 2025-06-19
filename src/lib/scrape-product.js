@@ -1,6 +1,5 @@
-const puppeteer = require("puppeteer");
-const fs = require("fs");
-const cheerio = require("cheerio");
+import puppeteer from "puppeteer";
+import { load } from "cheerio"; // <-- FIXED
 
 function fixGarbledPrice(text) {
     return text.replace('â‚¹', '').trim();
@@ -62,12 +61,11 @@ export default async function ScrapeProductInfo(url){
 
     await page.setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36");
     await page.goto(url, { waitUntil: "networkidle2" });
-    // Wait for product name or another key element
     await page.waitForSelector("span.VU-ZEz", { timeout: 10000 });
 
     const html = await page.content();
 
-    const $ = cheerio.load(html);
+    const $ = load(html); // <-- FIXED
 
     const product = {
         productName: getProductName($),
