@@ -15,9 +15,11 @@ export async function POST(request: Request) {
     }
     try {
         const LLMURL = process.env.LLM_URL!;
-        const response = await fetch(LLMURL+"/scrape-data?url=" + encodeURIComponent(productURL), {
-            method: "GET",
-        })
+        const response = await fetch(LLMURL + "/scrape-data", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ url: productURL }),
+        });
         const { productInfo }: { productInfo: Product } = await response.json();
         const productId = crypto.createHash("sha1").update(productURL).digest("hex");
         setCache(productId, productInfo);

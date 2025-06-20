@@ -35,7 +35,7 @@ export async function POST(request: Request) {
       },
       body: JSON.stringify({ product: productInfo, question }),
     });
-    console.log("LLM response:", response);
+    // console.log("LLM response:", response);
     if (!response.ok) {
         console.log("Failed to fetch data from LLM", response);
         return Response.json({error: "Failed to fetch data from LLM."}, { status: 500, headers: { "Content-Type": "application/json" } });
